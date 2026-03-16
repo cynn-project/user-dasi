@@ -22,77 +22,26 @@ export default function ProductCard({ product }) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        background: "#fff",
-        borderRadius: 14,
-        border: "1px solid var(--gray-200)",
-        overflow: "hidden",
-        boxShadow: hovered ? "0 8px 28px rgba(37,99,235,0.12)" : "var(--shadow-sm)",
-        transition: "box-shadow 0.22s, transform 0.22s",
-        transform: hovered ? "translateY(-3px)" : "none",
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-      }}
+      className={`bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col cursor-pointer transition-all duration-200 ${hovered ? "shadow-lg -translate-y-1" : "shadow-sm"}`}
     >
-      {/* Image area */}
-      <div style={{
-        background: "var(--gray-50)",
-        height: 160,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative",
-      }}>
-        <span style={{ fontSize: 64, lineHeight: 1 }}>{product.emoji}</span>
+      {/* Image */}
+      <div className="bg-gray-50 h-40 flex items-center justify-center relative">
+        <span className="text-6xl leading-none">{product.emoji}</span>
         <button
           onClick={e => { e.stopPropagation(); toggleFavorite(product); }}
-          style={{
-            position: "absolute", top: 10, right: 10,
-            width: 32, height: 32, borderRadius: "50%",
-            background: "#fff", border: "1px solid var(--gray-200)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-            transition: "transform 0.15s",
-            transform: liked ? "scale(1.18)" : "scale(1)",
-          }}
-        >
+          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center cursor-pointer shadow-sm transition-transform duration-150 ${liked ? "scale-110" : "scale-100"}`}>
           <HeartIcon filled={liked} />
         </button>
       </div>
 
       {/* Info */}
-      <div style={{ padding: "14px 16px 16px", flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-        <p style={{ fontSize: 14, fontWeight: 600, color: "var(--gray-900)", lineHeight: 1.35 }}>
-          {product.name}
-        </p>
-        <p style={{ fontSize: 12, color: "var(--gray-400)", textDecoration: "line-through" }}>
-          {product.originalPrice}
-        </p>
-        <p style={{ fontSize: 15, fontWeight: 700, color: "var(--blue-primary)", marginTop: 2 }}>
-          {product.price}
-        </p>
-
-        {/* Add to cart button on hover */}
+      <div className="p-3.5 flex flex-col gap-1 flex-1">
+        <p className="text-sm font-semibold text-gray-900 leading-snug">{product.name}</p>
+        <p className="text-xs text-gray-400 line-through">{product.originalPrice}</p>
+        <p className="text-sm font-bold text-blue-600 mt-0.5">{product.price}</p>
         <button
-          onClick={e => {
-            e.stopPropagation();
-            addToCart(product);
-            showToast({ message: `${product.name} ditambahkan ke keranjang!`, type: "success" });
-          }}
-          style={{
-            marginTop: 10,
-            padding: "8px 0",
-            background: hovered ? "var(--blue-primary)" : "var(--blue-light)",
-            color: hovered ? "#fff" : "var(--blue-primary)",
-            border: "none",
-            borderRadius: 8,
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: "pointer",
-            transition: "background 0.2s, color 0.2s",
-          }}
-        >
+          onClick={e => { e.stopPropagation(); addToCart(product); showToast({ message: `${product.name} ditambahkan ke keranjang!`, type: "success" }); }}
+          className={`mt-2.5 py-2 rounded-lg text-sm font-semibold border-none cursor-pointer transition-all duration-200 ${hovered ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"}`}>
           + Keranjang
         </button>
       </div>

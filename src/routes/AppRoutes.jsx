@@ -9,6 +9,7 @@ import OrderSuccess from "../pages/OrderSuccess";
 import Profile from "../pages/Profile";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
 
 // Pages that use the full layout (navbar + footer)
 const LAYOUT_PAGES = ["home", "orders", "favorites", "cart", "checkout", "order-success", "profile"];
@@ -36,12 +37,13 @@ export default function AppRoutes() {
       case "profile":      return <Profile onNavigate={navigate} />;
       case "login":        return <Login onNavigate={navigate} />;
       case "register":     return <Register onNavigate={navigate} />;
+      case "forgot-password": return <ForgotPassword onNavigate={navigate} />;
       default:             return <Home onNavigate={navigate} searchQuery={navSearch} />;
     }
   };
 
   // Auth pages skip the layout
-  if (page === "login" || page === "register") {
+  if (page === "login" || page === "register" || page === "forgot-password") {
     return renderPage();
   }
 

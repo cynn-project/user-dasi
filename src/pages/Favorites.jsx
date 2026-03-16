@@ -3,48 +3,29 @@ import ProductCard from "../components/ProductCard";
 
 export default function Favorites({ onNavigate }) {
   const { favorites } = useFavorite();
-
   return (
-    <div style={{ width: "100%", minHeight: "calc(100vh - var(--navbar-h) - 200px)", background: "#f8fafc", padding: "40px 40px 60px", fontFamily: "var(--font-body)" }}>
-      <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 26, color: "var(--gray-900)", marginBottom: 6 }}>Produk Favorit</h1>
-      <p style={{ color: "var(--gray-500)", fontSize: 14, marginBottom: 36 }}>Produk yang kamu suka, tersimpan di sini</p>
+    <div className="w-full min-h-[calc(100vh-64px)] bg-gray-50 px-10 py-10 pb-16">
+      <h1 className="font-extrabold text-2xl text-gray-900 mb-1.5" style={{ fontFamily: "var(--font-display)" }}>Produk Favorit</h1>
+      <p className="text-gray-500 text-sm mb-9">Produk yang kamu suka, tersimpan di sini</p>
 
       {favorites.length === 0 ? (
-        <div style={{
-          background: "#fff", borderRadius: 16, border: "1px solid var(--gray-200)",
-          padding: "80px 40px", display: "flex", flexDirection: "column",
-          alignItems: "center", gap: 16,
-        }}>
-          <div style={{
-            width: 80, height: 80, borderRadius: "50%",
-            background: "#fff0f0", border: "1px solid #fecaca",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none"
-              stroke="#f87171" strokeWidth="1.8">
+        <div className="bg-white rounded-2xl border border-gray-200 py-20 px-10 flex flex-col items-center gap-4">
+          <div className="w-20 h-20 rounded-full bg-red-50 border border-red-100 flex items-center justify-center">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="1.8" strokeLinecap="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </div>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: "var(--gray-800)" }}>Belum Ada Favorit</h3>
-          <p style={{ color: "var(--gray-500)", fontSize: 14, textAlign: "center" }}>
-            Klik ikon ❤️ pada produk untuk menambahkannya ke sini
-          </p>
-          <button onClick={() => onNavigate("home")} style={{
-            marginTop: 8, padding: "13px 36px",
-            background: "var(--blue-primary)", color: "#fff",
-            border: "none", borderRadius: 12, fontSize: 15, fontWeight: 700,
-            fontFamily: "var(--font-body)", cursor: "pointer", transition: "background .18s",
-          }}
-            onMouseEnter={e => e.currentTarget.style.background = "var(--blue-dark)"}
-            onMouseLeave={e => e.currentTarget.style.background = "var(--blue-primary)"}
-          >
+          <h3 className="text-lg font-bold text-gray-800">Belum Ada Favorit</h3>
+          <p className="text-gray-500 text-sm text-center">Klik ikon ❤️ pada produk untuk menambahkannya ke sini</p>
+          <button onClick={() => onNavigate("home")}
+            className="mt-2 px-9 py-3 bg-blue-600 text-white rounded-xl text-sm font-bold border-none cursor-pointer hover:bg-blue-700 transition-colors">
             Jelajahi Produk
           </button>
         </div>
       ) : (
         <>
-          <p style={{ color: "var(--gray-500)", fontSize: 13.5, marginBottom: 20 }}>{favorites.length} produk favorit</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 18 }}>
+          <p className="text-gray-500 text-sm mb-5">{favorites.length} produk favorit</p>
+          <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))" }}>
             {favorites.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         </>

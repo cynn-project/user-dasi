@@ -4,35 +4,24 @@ export default function ProtectedRoute({ children, onNavigate }) {
   const { user } = useAuth();
   if (!user) {
     return (
-      <div style={{
-        minHeight: "60vh", display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center", gap: 16,
-        fontFamily: "var(--font-body)",
-      }}>
-        <div style={{
-          width: 64, height: 64, borderRadius: "50%",
-          background: "var(--blue-light)", display: "flex",
-          alignItems: "center", justifyContent: "center",
-        }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-            stroke="var(--blue-primary)" strokeWidth="2" strokeLinecap="round">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+        <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
         </div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: "var(--gray-900)" }}>Akses Dibatasi</h2>
-        <p style={{ color: "var(--gray-500)", fontSize: 14 }}>Kamu perlu masuk untuk mengakses halaman ini.</p>
-        <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
-          <button onClick={() => onNavigate("login")} style={{
-            padding: "10px 28px", background: "var(--blue-primary)", color: "#fff",
-            border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600,
-            fontFamily: "var(--font-body)", cursor: "pointer",
-          }}>Masuk</button>
-          <button onClick={() => onNavigate("register")} style={{
-            padding: "10px 28px", background: "var(--blue-light)", color: "var(--blue-primary)",
-            border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600,
-            fontFamily: "var(--font-body)", cursor: "pointer",
-          }}>Daftar</button>
+        <h2 className="text-xl font-bold text-gray-900">Akses Dibatasi</h2>
+        <p className="text-gray-500 text-sm">Kamu perlu masuk untuk mengakses halaman ini.</p>
+        <div className="flex gap-3 mt-2">
+          <button onClick={() => onNavigate("login")}
+            className="px-7 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold border-none cursor-pointer hover:bg-blue-700 transition-colors">
+            Masuk
+          </button>
+          <button onClick={() => onNavigate("register")}
+            className="px-7 py-2.5 bg-blue-50 text-blue-600 rounded-xl text-sm font-semibold border-none cursor-pointer hover:bg-blue-100 transition-colors">
+            Daftar
+          </button>
         </div>
       </div>
     );

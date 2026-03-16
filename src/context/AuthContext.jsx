@@ -6,30 +6,46 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   const login = (email, password) => {
-    // Cari data user yang sudah pernah daftar dari localStorage
     const saved = localStorage.getItem("dasi_user_" + email);
     if (saved) {
       const userData = JSON.parse(saved);
+      // Cek password — kalau tidak cocok, tolak login
+      if (userData.password && userData.password !== password) {
+        return false;
+      }
       setUser(userData);
-    } else {
-      // Belum pernah daftar, pakai email sebagai nama sementara
-      setUser({ name: email.split("@")[0], email });
+      return true;
     }
-    return true;
+    // Email belum terdaftar
+    return false;
   };
 
   const register = (data) => {
-    const userData = { name: data.name, email: data.email, phone: data.phone };
-    // Simpan ke localStorage supaya bisa diambil saat login
+    const userData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+      dob: "", gender: "", address: "",
+    };
     localStorage.setItem("dasi_user_" + data.email, JSON.stringify(userData));
     setUser(userData);
     return true;
   };
 
-  const logout = () => setUser(null);
+  const updateProfile = (data) => {
+    const updated = { ...user, ...data };
+    localStorage.setItem("dasi_user_" + user.email, JSON.stringify(updated));
+    setUser(updated);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("dasi_remember");
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

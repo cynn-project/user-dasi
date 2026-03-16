@@ -1,127 +1,110 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import logoDasi from "../../assets/logo_dasi.jpeg";
+
+const BackIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+);
 const EyeIcon = ({ show }) => show ? (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
 ) : (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-    <line x1="1" y1="1" x2="23" y2="23" />
-  </svg>
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
 );
 
 export default function Login({ onNavigate }) {
   const { login } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  // Ambil data tersimpan dari localStorage saat komponen pertama kali dibuka
+  const saved = JSON.parse(localStorage.getItem("dasi_remember") || "null");
+  const [form, setForm] = useState({ email: saved?.email || "", password: saved?.password || "" });
   const [showPw, setShowPw] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(!!saved);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Kalau ada data tersimpan, langsung auto-login
+  useEffect(() => {
+    if (saved?.email && saved?.password) {
+      login(saved.email, saved.password);
+      onNavigate("home");
+    }
+  }, []);
 
   const handleSubmit = async () => {
     setError("");
     if (!form.email || !form.password) { setError("Lengkapi semua field."); return; }
     setLoading(true);
     await new Promise(r => setTimeout(r, 600));
-    login(form.email, form.password);
+
+    if (rememberMe) {
+      localStorage.setItem("dasi_remember", JSON.stringify({ email: form.email, password: form.password }));
+    } else {
+      localStorage.removeItem("dasi_remember");
+    }
+
+    const success = login(form.email, form.password);
     setLoading(false);
+    if (!success) {
+      setError("Email atau password salah. Coba lagi.");
+      return;
+    }
     onNavigate("home");
   };
 
-  const inputStyle = {
-    width: "100%", padding: "12px 14px", border: "1.5px solid var(--gray-200)",
-    borderRadius: 10, fontSize: 14, fontFamily: "var(--font-body)",
-    color: "var(--gray-900)", outline: "none", transition: "border-color .18s",
-    background: "#fff",
-  };
+  const inputCls = "w-full px-3.5 py-3 border border-gray-200 rounded-xl text-sm outline-none bg-white transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
 
   return (
-    <div style={{
-      minHeight: "100vh", background: "linear-gradient(135deg,#eff6ff 0%,#f0fdf4 100%)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: 24, fontFamily: "var(--font-body)",
-    }}>
-      <div style={{
-        background: "#fff", borderRadius: 20, padding: "40px 36px",
-        width: "100%", maxWidth: 380,
-        boxShadow: "0 20px 60px rgba(37,99,235,0.1)",
-        border: "1px solid var(--gray-100)",
-      }}>
-        {/* Logo */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 28 }}>
-          <img src={logoDasi} alt="DASI Logo" style={{ width: 72, height: 72, objectFit: "contain", marginBottom: 16 }} />
-          <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--gray-900)", marginBottom: 6 }}>
-            Masuk ke DASI
-          </h1>
-          <p style={{ color: "var(--gray-500)", fontSize: 14 }}>Selamat datang kembali!</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-6 relative">
+      <button onClick={() => onNavigate("home")}
+        className="absolute top-6 left-6 flex items-center gap-1.5 bg-white border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-semibold text-gray-600 cursor-pointer shadow-sm hover:border-blue-400 hover:text-blue-600 transition-colors">
+        <BackIcon /> Beranda
+      </button>
+
+      <div className="bg-white rounded-2xl px-9 py-10 w-full max-w-sm shadow-xl border border-gray-100">
+        <div className="flex flex-col items-center mb-7">
+          <img src={logoDasi} alt="DASI" className="w-16 h-16 object-contain mb-4" />
+          <h1 className="font-extrabold text-xl text-gray-900 mb-1.5" style={{ fontFamily: "var(--font-display)" }}>Masuk ke DASI</h1>
+          <p className="text-gray-500 text-sm">Selamat datang kembali!</p>
         </div>
 
-        {error && (
-          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", marginBottom: 16, color: "var(--red)", fontSize: 13 }}>
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5 mb-4 text-red-600 text-sm">{error}</div>}
 
-        {/* Email */}
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: "block", fontSize: 13.5, fontWeight: 600, color: "var(--gray-700)", marginBottom: 6 }}>Email</label>
+        <div className="mb-4">
+          <label className="block text-xs font-semibold text-gray-700 mb-1.5">Email</label>
           <input type="email" placeholder="nama@email.com" value={form.email}
-            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-            style={inputStyle}
-            onFocus={e => e.target.style.borderColor = "var(--blue-primary)"}
-            onBlur={e => e.target.style.borderColor = "var(--gray-200)"}
-          />
+            onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className={inputCls} />
         </div>
 
-        {/* Password */}
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ display: "block", fontSize: 13.5, fontWeight: 600, color: "var(--gray-700)", marginBottom: 6 }}>Password</label>
-          <div style={{ position: "relative" }}>
+        <div className="mb-2">
+          <label className="block text-xs font-semibold text-gray-700 mb-1.5">Password</label>
+          <div className="relative">
             <input type={showPw ? "text" : "password"} placeholder="••••••••" value={form.password}
               onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-              style={{ ...inputStyle, paddingRight: 44 }}
-              onFocus={e => e.target.style.borderColor = "var(--blue-primary)"}
-              onBlur={e => e.target.style.borderColor = "var(--gray-200)"}
               onKeyDown={e => e.key === "Enter" && handleSubmit()}
-            />
-            <button onClick={() => setShowPw(s => !s)} style={{
-              position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-              background: "none", border: "none", color: "var(--gray-400)", cursor: "pointer",
-            }}><EyeIcon show={showPw} /></button>
+              className={`${inputCls} pr-11`} />
+            <button onClick={() => setShowPw(s => !s)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none text-gray-400 cursor-pointer hover:text-gray-600 p-0.5">
+              <EyeIcon show={showPw} />
+            </button>
           </div>
         </div>
 
-        {/* Remember + Forgot */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
-          <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, color: "var(--gray-600)", cursor: "pointer" }}>
-            <input type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)}
-              style={{ width: 14, height: 14, accentColor: "var(--blue-primary)" }} />
+        <div className="flex justify-between items-center mb-6">
+          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} className="accent-blue-600 w-3.5 h-3.5" />
             Ingat saya
           </label>
-          <button style={{ background: "none", border: "none", fontSize: 13, color: "var(--blue-primary)", fontWeight: 600, cursor: "pointer" }}>
-            Lupa password?
-          </button>
+          <button onClick={() => onNavigate("forgot-password")} className="bg-transparent border-none text-sm text-blue-600 font-semibold cursor-pointer">Lupa password?</button>
         </div>
 
-        {/* Submit */}
-        <button onClick={handleSubmit} disabled={loading} style={{
-          width: "100%", padding: "13px", background: loading ? "var(--blue-muted)" : "var(--blue-primary)",
-          color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 700,
-          fontFamily: "var(--font-body)", cursor: loading ? "not-allowed" : "pointer",
-          transition: "background .18s", marginBottom: 20,
-        }}>
+        <button onClick={handleSubmit} disabled={loading}
+          className={`w-full py-3 rounded-xl text-sm font-bold border-none mb-5 transition-colors ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 text-white cursor-pointer hover:bg-blue-700"}`}>
           {loading ? "Memproses..." : "Masuk"}
         </button>
 
-        <p style={{ textAlign: "center", fontSize: 13.5, color: "var(--gray-500)" }}>
+        <p className="text-center text-sm text-gray-500">
           Belum punya akun?{" "}
-          <button onClick={() => onNavigate("register")} style={{ background: "none", border: "none", color: "var(--blue-primary)", fontWeight: 700, cursor: "pointer", fontSize: 13.5 }}>
-            Daftar
-          </button>
+          <button onClick={() => onNavigate("register")} className="bg-transparent border-none text-blue-600 font-bold cursor-pointer text-sm">Daftar</button>
         </p>
       </div>
     </div>

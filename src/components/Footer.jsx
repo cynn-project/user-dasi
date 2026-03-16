@@ -2,69 +2,58 @@ import logoDasi from "../assets/logo_dasi.jpeg";
 
 export default function Footer() {
   return (
-    <footer style={{ background: "var(--dark-footer)", fontFamily: "var(--font-body)" }}>
-      <div style={{ width: "100%", padding: "44px 40px 0" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 40, paddingBottom: 36 }}>
+    <footer className="bg-gray-900" style={{ fontFamily: "var(--font-body)" }}>
+      <div className="w-full px-10 pt-11 pb-0">
+        <div className="flex flex-wrap gap-10 pb-9">
 
           {/* Brand */}
-          <div style={{ flex: "1 1 200px", maxWidth: 260 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <img src={logoDasi} alt="DASI Logo" style={{ width: 38, height: 38, objectFit: "contain" }} />
-              <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: "#fff" }}>DASI</span>
+          <div className="flex-[1.5] min-w-[200px] max-w-[260px]">
+            <div className="flex items-center gap-2.5 mb-3.5">
+              <img src={logoDasi} alt="DASI" className="w-9 h-9 object-contain" />
+              <span className="font-extrabold text-xl text-white tracking-tight" style={{ fontFamily: "var(--font-display)" }}>DASI</span>
             </div>
-            <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7 }}>
+            <p className="text-slate-500 text-sm leading-relaxed max-w-[220px]">
               DAnusan oSIs – Marketplace terpercaya untuk semua kebutuhanmu.
             </p>
           </div>
 
           {/* Layanan */}
-          <div style={{ flex: "1 1 140px" }}>
-            <h4 style={{ color: "#fff", fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Layanan</h4>
+          <div className="min-w-[140px]">
+            <h4 className="text-white text-sm font-bold mb-4">Layanan</h4>
             {["Cara Belanja", "Cara Pembayaran", "Pengiriman"].map(l => (
-              <a key={l} href="#" style={{ display: "block", color: "#64748b", fontSize: 13, marginBottom: 10, transition: "color .15s" }}
-                onMouseEnter={e => e.target.style.color = "#e2e8f0"}
-                onMouseLeave={e => e.target.style.color = "#64748b"}>
-                {l}
-              </a>
+              <a key={l} href="#" className="block text-slate-500 text-sm mb-2.5 hover:text-slate-200 transition-colors">{l}</a>
             ))}
           </div>
 
           {/* Tentang */}
-          <div style={{ flex: "1 1 140px" }}>
-            <h4 style={{ color: "#fff", fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Tentang</h4>
+          <div className="min-w-[140px]">
+            <h4 className="text-white text-sm font-bold mb-4">Tentang</h4>
             {["Tentang Kami", "Kebijakan Privasi", "Syarat & Ketentuan"].map(l => (
-              <a key={l} href="#" style={{ display: "block", color: "#64748b", fontSize: 13, marginBottom: 10, transition: "color .15s" }}
-                onMouseEnter={e => e.target.style.color = "#e2e8f0"}
-                onMouseLeave={e => e.target.style.color = "#64748b"}>
-                {l}
-              </a>
+              <a key={l} href="#" className="block text-slate-500 text-sm mb-2.5 hover:text-slate-200 transition-colors">{l}</a>
             ))}
           </div>
 
           {/* Hubungi */}
-          <div style={{ flex: "1 1 180px" }}>
-            <h4 style={{ color: "#fff", fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Hubungi Kami</h4>
-            <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 12 }}>
+          <div className="min-w-[180px]">
+            <h4 className="text-white text-sm font-bold mb-4">Hubungi Kami</h4>
+            <div className="flex items-center gap-2 mb-3">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              <span style={{ color: "#94a3b8", fontSize: 13 }}>support@dasi.id</span>
+              <span className="text-slate-400 text-sm">support@dasi.id</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+            <div className="flex items-center gap-2">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.46-1.46a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+                <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.62 19a19.5 19.5 0 01-6-6A19.79 19.79 0 013.12 4.18 2 2 0 015.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 9.09a16 16 0 006 6l.46-.46a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
               </svg>
-              <span style={{ color: "#94a3b8", fontSize: 13 }}>(021) 1234–5678</span>
+              <span className="text-slate-400 text-sm">(021) 1234–5678</span>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div style={{ borderTop: "1px solid #1e293b", padding: "18px 0", textAlign: "center" }}>
-          <p style={{ color: "#475569", fontSize: 12.5 }}>
-            © 2026 OSIS SMKN 7 Semarang. Semua hak dilindungi.
-          </p>
+        <div className="border-t border-slate-800 py-5 text-center">
+          <p className="text-slate-500 text-xs">© 2026 OSIS SMKN 7 Semarang. Semua hak dilindungi.</p>
         </div>
       </div>
     </footer>
