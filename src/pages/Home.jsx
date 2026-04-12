@@ -82,15 +82,7 @@ export default function Home({ onNavigate, searchQuery }) {
               {displayed.map(p => <ProductCard key={p.id} product={p} onNavigate={onNavigate} />)}
             </div>
 
-            <div className="flex justify-center mt-8">
-              <button onClick={() => onNavigate("all-products")}
-                className="flex items-center gap-2 px-8 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 cursor-pointer hover:border-blue-400 hover:text-blue-600 transition-all shadow-sm">
-                Lihat Semua {allFiltered.length} Produk
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
-            </div>
+          
           </>
         )}
       </section>
