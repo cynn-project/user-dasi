@@ -46,9 +46,8 @@ export default function ProductDetail({ product, onNavigate, previousPage }) {
           <button onClick={() => onNavigate("home")} className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer text-sm text-gray-400">
             Beranda
           </button>
-          <span>/</span>
           <button onClick={() => onNavigate(previousPage || "home")} className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer text-sm text-gray-400">
-            {previousPage === "all-products" ? "Semua Produk" : "Produk Pilihan"}
+  
           </button>
           <span>/</span>
           <span className="text-gray-700 font-medium truncate max-w-[200px]">{product.name}</span>
