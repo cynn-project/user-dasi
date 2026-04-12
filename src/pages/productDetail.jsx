@@ -26,8 +26,7 @@ export default function ProductDetail({ product, onNavigate, previousPage }) {
   const handleBuyNow = () => {
     if (!allVariantsSelected) { showToast({ message: "Pilih semua varian terlebih dahulu!", type: "error" }); return; }
     const variantLabel = Object.entries(selectedVariants).map(([k, v]) => `${k}: ${v}`).join(", ");
-    for (let i = 0; i < qty; i++) addToCart({ ...product, variantLabel });
-    onNavigate("cart");
+    onNavigate("checkout", { selectedItems: [{ ...product, variantLabel, qty }] });
   };
 
   return (
@@ -46,8 +45,9 @@ export default function ProductDetail({ product, onNavigate, previousPage }) {
           <button onClick={() => onNavigate("home")} className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer text-sm text-gray-400">
             Beranda
           </button>
+          <span>/</span>
           <button onClick={() => onNavigate(previousPage || "home")} className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer text-sm text-gray-400">
-  
+            {previousPage === "all-products" ? "Semua Produk" : "Produk Pilihan"}
           </button>
           <span>/</span>
           <span className="text-gray-700 font-medium truncate max-w-[200px]">{product.name}</span>

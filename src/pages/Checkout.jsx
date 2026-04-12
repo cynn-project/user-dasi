@@ -12,7 +12,6 @@ export default function Checkout({ onNavigate, checkoutItems }) {
   const { addOrder } = useOrder();
   const { user } = useAuth();
 
-  // Pakai item yang dipilih dari cart, atau semua item kalau tidak ada
   const items = checkoutItems || cartItems;
   const total = items.reduce((sum, i) => sum + i.numericPrice * i.qty, 0);
 
@@ -49,7 +48,6 @@ export default function Checkout({ onNavigate, checkoutItems }) {
     };
 
     addOrder(orderData);
-    // Hapus item yang sudah dicheckout dari cart
     items.forEach(i => removeFromCart(i.id));
     setLoading(false);
     onNavigate("order-success", orderData);
@@ -60,11 +58,18 @@ export default function Checkout({ onNavigate, checkoutItems }) {
   return (
     <ProtectedRoute onNavigate={onNavigate}>
       <div className="w-full bg-gray-50 px-10 py-10 pb-16">
-        <h1 className="font-extrabold text-2xl text-gray-900 mb-7" style={{ fontFamily: "var(--font-display)" }}>Checkout</h1>
+        <div className="flex items-center gap-3 mb-7">
+          <button onClick={() => onNavigate("cart")}
+            className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center cursor-pointer hover:border-blue-400 hover:text-blue-600 transition-colors text-gray-500 shrink-0 shadow-sm">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <h1 className="font-extrabold text-2xl text-gray-900" style={{ fontFamily: "var(--font-display)" }}>Checkout</h1>
+        </div>
 
         <div className="flex gap-6 flex-wrap items-start">
 
-          {/* Form kiri */}
           <div className="flex-[1_1_420px] flex flex-col gap-5">
 
             {/* Info pengiriman */}
@@ -133,7 +138,7 @@ export default function Checkout({ onNavigate, checkoutItems }) {
             </div>
           </div>
 
-          {/* Ringkasan kanan */}
+          {/* Ringkasan */}
           <div className="flex-[0_0_300px] bg-white rounded-2xl border border-gray-200 p-6">
             <h3 className="text-base font-bold mb-4">Ringkasan ({items.length} produk)</h3>
             <div className="max-h-48 overflow-y-auto mb-3 space-y-2">
