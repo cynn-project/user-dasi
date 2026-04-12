@@ -11,7 +11,7 @@ const HeartIcon = ({ filled }) => (
   </svg>
 );
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onNavigate }) {
   const [hovered, setHovered] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorite();
   const { addToCart } = useCart();
@@ -22,6 +22,7 @@ export default function ProductCard({ product }) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => onNavigate?.("product-detail", product)}
       className={`bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col cursor-pointer transition-all duration-200 ${hovered ? "shadow-lg -translate-y-1" : "shadow-sm"}`}
     >
       {/* Image */}
@@ -34,16 +35,11 @@ export default function ProductCard({ product }) {
         </button>
       </div>
 
-      {/* Info */}
       <div className="p-3.5 flex flex-col gap-1 flex-1">
         <p className="text-sm font-semibold text-gray-900 leading-snug">{product.name}</p>
         <p className="text-xs text-gray-400 line-through">{product.originalPrice}</p>
         <p className="text-sm font-bold text-blue-600 mt-0.5">{product.price}</p>
-        <button
-          onClick={e => { e.stopPropagation(); addToCart(product); showToast({ message: `${product.name} ditambahkan ke keranjang!`, type: "success" }); }}
-          className={`mt-2.5 py-2 rounded-lg text-sm font-semibold border-none cursor-pointer transition-all duration-200 ${hovered ? "bg-blue-600 text-white" : "bg-blue-50 text-blue-600"}`}>
-          + Keranjang
-        </button>
+        
       </div>
     </div>
   );

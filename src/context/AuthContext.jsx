@@ -9,24 +9,18 @@ export function AuthProvider({ children }) {
     const saved = localStorage.getItem("dasi_user_" + email);
     if (saved) {
       const userData = JSON.parse(saved);
-      // Cek password — kalau tidak cocok, tolak login
-      if (userData.password && userData.password !== password) {
-        return false;
-      }
+      if (userData.password && userData.password !== password) return false;
       setUser(userData);
       return true;
     }
-    // Email belum terdaftar
     return false;
   };
 
   const register = (data) => {
     const userData = {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      password: data.password,
-      dob: "", gender: "", address: "",
+      name: data.name, email: data.email,
+      phone: data.phone, password: data.password,
+      kelas: "", jurusan: "", photo: "",
     };
     localStorage.setItem("dasi_user_" + data.email, JSON.stringify(userData));
     setUser(userData);
